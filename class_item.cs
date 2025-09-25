@@ -1,6 +1,6 @@
 // class för item
 
-namespace App;
+namespace item_class;
 
 class Item
 {
@@ -11,6 +11,6 @@ class Item
     public Item(string item_name, string item_description)
     {
         Item_description = item_description;
-        Item_name = item_name
+        Item_name = item_name;
     }
 }

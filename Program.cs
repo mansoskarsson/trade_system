@@ -11,7 +11,9 @@ A user needs to be able to deny a trade request.
 A user needs to be able to browse completed requests.
 */
 
+using System.Runtime.CompilerServices;
 using App;
+using item_class;
 
 
 List <User> users = new List<User>();            //Här lägger jag till en lista med folks inlogg.
@@ -24,13 +26,16 @@ users.Add(new User("wtanski@hotmail.com", "password123"));
 users.Add(new User("dtrulsson@hotmail.com", "password123"));
 users.Add(new User("sandersson@hotmail.com", "password123"));
 
-User active_user = null;   // Antingen finns det en User eller så kan den vara tom. Antingen finns en inloggad user eller inte.
+List<Item> items = new List<Item>();
+
+
+User? active_user = null;   // Antingen finns det en User eller så kan den vara tom. Antingen finns en inloggad user eller inte.
 
 bool running = true;
 
 while (running)
 {
-    if(active_user == null)   // Funktionen för att logga in
+    if (active_user == null)   // Funktionen för att logga in
     {
         Console.Write("Email: ");
         string username = Console.ReadLine();
@@ -46,19 +51,55 @@ while (running)
                 break;
             }
         }
-    }    
+    }
     else            // Funktionen för att logga ut
     {
         Console.WriteLine("--- Trade system ---");
-        Console.WriteLine("logout");
-        string input = Console.ReadLine();
+        
 
-        switch (input)
+        if (true)
         {
-            case "logout":
-                active_user = null;
-                break;
+            Console.WriteLine("Welcome User! Ready to start trade?");
+            Console.WriteLine("Select what you want to do: ");
+            Console.WriteLine("1. Add an item");
+            Console.WriteLine("2. Show items in inventory");
+            Console.WriteLine("3. Make a trade");
+
+            string userChoice = Console.ReadLine();
+
+            switch (userChoice)
+            {
+                case "1":
+                    Item newItem = new Item("Name", "Description");
+                    Console.Write("Please type in the name of your item: ");
+                    newItem.Item_name = Console.ReadLine();
+                    Console.Write("Please type an description of your item: ");
+                    newItem.Item_description = Console.ReadLine();
+                    items.Add(newItem);
+                    Console.WriteLine("The Item have been added! Press ENTER");
+                    Console.ReadLine();
+                    break;
+
+                case "2":
+                    Console.WriteLine("Items in inventory");
+                    if (items.Count == 0)
+                        Console.WriteLine("Inventory is empty");
+                    else
+                    {
+                        for (int i = 0; i < items.Count; i ++)
+                        {
+                            Item u = items[i];
+                            Console.WriteLine($"{i + 1}. {u.Item_name} with the description: {u.Item_description}");
+                        }
+                        Console.WriteLine("Press enter to continue");
+                        Console.ReadLine();
+                    }
+                break;    
+                    
+            }
+
         }
+        
     }
     
 }
