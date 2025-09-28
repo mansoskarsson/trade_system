@@ -8,17 +8,28 @@ class Trade
     public string Reciever;
     public string TradeStatus;
     public string Item;
-    public string Accept;
-    public string Deny;
+   
 
-    public Trade(string sender, string reciever, string tradeStatus, string item, string accept, string deny)
+    public Trade(string sender, string reciever, string tradeStatus, string item)
     {
         Sender = sender;
         Reciever = reciever;
         TradeStatus = tradeStatus;
         Item = item;
-        Accept = accept;
-        Deny = deny;
+        
     }
 
 }
+
+class Tradeaction
+{
+    public string Accept;
+    public string Deny;
+
+
+    public Tradeaction(string accept, string deny)
+    {
+        Accept = accept;
+        Deny = deny;
+    }
+}    

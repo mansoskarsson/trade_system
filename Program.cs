@@ -26,7 +26,7 @@ users.Add(new User("wtanski@hotmail.com", "password123"));
 users.Add(new User("dtrulsson@hotmail.com", "password123"));
 users.Add(new User("sandersson@hotmail.com", "password123"));
 
-List<Item> items = new List<Item>();
+List<Item> items = new List<Item>();  //Lista för items
 
 
 User? active_user = null;   // Antingen finns det en User eller så kan den vara tom. Antingen finns en inloggad user eller inte.
@@ -52,24 +52,26 @@ while (running)
             }
         }
     }
-    else            // Funktionen för att logga ut
+    else            
     {
         Console.WriteLine("--- Trade system ---");
         
 
-        if (true)
+        if (true)         // En meny för att välja vad man vill göra
         {
             Console.WriteLine("Welcome User! Ready to start trade?");
             Console.WriteLine("Select what you want to do: ");
             Console.WriteLine("1. Add an item");
             Console.WriteLine("2. Show items in inventory");
             Console.WriteLine("3. Make a trade");
+            Console.WriteLine("4. Browse trade requests");
+            Console.WriteLine("5. Browse completed trades");
 
             string userChoice = Console.ReadLine();
 
             switch (userChoice)
             {
-                case "1":
+                case "1":                                             // Detta är för att kunna lägga till items med namn och beskrivning
                     Item newItem = new Item("Name", "Description");
                     Console.Write("Please type in the name of your item: ");
                     newItem.Item_name = Console.ReadLine();
@@ -80,13 +82,13 @@ while (running)
                     Console.ReadLine();
                     break;
 
-                case "2":
+                case "2":                                         // Detta är för att kunna visa vilka items som har lagt till i inventory
                     Console.WriteLine("Items in inventory");
                     if (items.Count == 0)
                         Console.WriteLine("Inventory is empty");
                     else
                     {
-                        for (int i = 0; i < items.Count; i ++)
+                        for (int i = 0; i < items.Count; i++)
                         {
                             Item u = items[i];
                             Console.WriteLine($"{i + 1}. {u.Item_name} with the description: {u.Item_description}");
@@ -94,7 +96,11 @@ while (running)
                         Console.WriteLine("Press enter to continue");
                         Console.ReadLine();
                     }
-                break;    
+                    break;
+
+                case "3":
+                    Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
+                    Console.Write("")    
                     
             }
 
