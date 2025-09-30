@@ -84,8 +84,9 @@ while (running)
 
                 case "2":                                         // Detta är för att kunna visa vilka items som har lagt till i inventory
                     Console.WriteLine("Items in inventory");
-                    if (items.Count == 0)
+                    if (items.Count == 0) {
                         Console.WriteLine("Inventory is empty");
+                    }
                     else
                     {
                         for (int i = 0; i < items.Count; i++)
@@ -100,7 +101,8 @@ while (running)
 
                 case "3":
                     Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
-                    Console.Write("")    
+                    Console.Write("Current sender is:" {GetUser} "and current reciever is:" {GetUser});
+                    break; 
                     
             }
 

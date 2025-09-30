@@ -8,7 +8,7 @@ class Trade
     public string Reciever;
     public string TradeStatus;
     public string Item;
-   
+
 
     public Trade(string sender, string reciever, string tradeStatus, string item)
     {
@@ -16,8 +16,14 @@ class Trade
         Reciever = reciever;
         TradeStatus = tradeStatus;
         Item = item;
-        
+
     }
+
+    public TradeStatus GetTradeStatus();
+
+    public Item GetItem();
+
+    public User GetUser();
 
 }
 
