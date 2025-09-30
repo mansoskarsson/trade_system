@@ -13,53 +13,62 @@ A user needs to be able to browse completed requests.
 
 using System.Runtime.CompilerServices;
 using App;
-using item_class;
 
 
-List <User> users = new List<User>();            //Här lägger jag till en lista med folks inlogg.
-users.Add(new User("moskarsson@hotmail.com", "password123"));
-users.Add(new User("mlind@hotmail.com", "password123"));
-users.Add(new User("anilsson@hotmail.com", "password123"));
-users.Add(new User("hsöderberg@hotmail.com", "password123"));
-users.Add(new User("dknezevic@hotmail.com", "password123"));
-users.Add(new User("wtanski@hotmail.com", "password123"));
-users.Add(new User("dtrulsson@hotmail.com", "password123"));
-users.Add(new User("sandersson@hotmail.com", "password123"));
 
-List<Item> items = new List<Item>();  //Lista för items
+List<User> users = new List<User>();            //Här lägger jag till en lista med folks inlogg.
+
+Console.WriteLine("=== Create an account ===");
+Console.Write("Type your Email: ");
+string newUsername = Console.ReadLine();
+
+Console.Write("Choose a password: ");
+string newPassword = Console.ReadLine();
+
+users.Add(new User(newUsername, newPassword));
+Console.WriteLine("Account created!");
+
+Console.WriteLine("=== Log in ===");
+Console.Write("Email: ");
+string loginUser = Console.ReadLine();
+
+Console.Write("Password: ");
+string loginPassword = Console.ReadLine();
+
+List<Item> items = new List<Item>();
 
 
-User? active_user = null;   // Antingen finns det en User eller så kan den vara tom. Antingen finns en inloggad user eller inte.
+
+
+
+ 
 
 bool running = true;
 
 while (running)
 {
-    if (active_user == null)   // Funktionen för att logga in
+    bool loggedIn = false;
+
+    foreach (User user in users)
     {
-        Console.Write("Email: ");
-        string username = Console.ReadLine();
-
-        Console.Write("Password: ");
-        string password = Console.ReadLine();
-
-        foreach (User user in users)
+        if (user.TryLogin(loginUser, loginPassword))
         {
-            if (user.TryLogin(username, password))
-            {
-                active_user = user;
-                break;
-            }
+            loggedIn = true;
+            break;
         }
+    }
+    if (!loggedIn)
+    {
+        Console.WriteLine("Wrong username or password");
     }
     else            
     {
-        Console.WriteLine("--- Trade system ---");
+        Console.WriteLine($" Welcome {loginUser}");
         
 
         if (true)         // En meny för att välja vad man vill göra
         {
-            Console.WriteLine("Welcome User! Ready to start trade?");
+            Console.WriteLine("Ready to start trade?");
             Console.WriteLine("Select what you want to do: ");
             Console.WriteLine("1. Add an item");
             Console.WriteLine("2. Show items in inventory");
@@ -71,7 +80,7 @@ while (running)
 
             switch (userChoice)
             {
-                case "1":                                             // Detta är för att kunna lägga till items med namn och beskrivning
+                case "1":    // Detta är för att kunna lägga till items med namn och beskrivning
                     Item newItem = new Item("Name", "Description");
                     Console.Write("Please type in the name of your item: ");
                     newItem.Item_name = Console.ReadLine();
@@ -101,7 +110,7 @@ while (running)
 
                 case "3":
                     Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
-                    Console.Write("Current sender is:" {GetUser} "and current reciever is:" {GetUser});
+                    //Console.Write("Current sender is:" {GetUser} "and current reciever is:" {GetUser});
                     break; 
                     
             }

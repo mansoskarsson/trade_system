@@ -1,6 +1,6 @@
 // class för item
 
-namespace item_class;
+namespace App;
 
 class Item
 {

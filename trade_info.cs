@@ -19,11 +19,11 @@ class Trade
 
     }
 
-    public TradeStatus GetTradeStatus();
+    //public TradeStatus GetTradeStatus();
 
-    public Item GetItem();
+    //public Item GetItem();
 
-    public User GetUser();
+    //public User GetUser();
 
 }
 

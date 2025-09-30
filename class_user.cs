@@ -4,19 +4,19 @@ namespace App;
 
 class User
 {
-    public string Email;
+    public string Username;
 
-    string _password;
+    string Password;
 
 
-    public User(string email, string password)
+    public User(string username, string password)
     {
-        Email = email;
-        _password = password;
+        Username = username;
+        Password = password;
     }
 
     public bool TryLogin(string username, string password)
     {
-        return username == Email && password == _password;
+        return username == Username && password == Password;
     }
 }
