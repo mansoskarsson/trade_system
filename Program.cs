@@ -14,16 +14,9 @@ A user needs to be able to browse completed requests.
 using System.Runtime.CompilerServices;
 using App;
 
-
-
 List<User> users = new List<User>();            
 
-
-
 List<Item> items = new List<Item>();
-
-
-
 
 bool running = true;
 
@@ -62,7 +55,7 @@ while (running)
                 Console.WriteLine($" Welcome {loginUser}");        // om rätt inlogg kommer man vidare till menyn
 
                 string[] User = { loginUser, loginPassword };     // Spara inlogg i users.txt
-                File.WriteAllLines("users.txt", User);
+                File.AppendAllLines("users.txt", User);
 
                 break;
             }
@@ -97,6 +90,8 @@ while (running)
                 items.Add(newItem);
                 Console.WriteLine("The Item have been added! Press ENTER");
                 Console.ReadLine();
+                string[] Item = { newItem.Item_name, newItem.Item_description };
+                File.AppendAllLines("items.txt", Item);
                 break;
 
             case "2":                                         // Detta är för att kunna visa vilka items som har lagt till i inventory
@@ -117,11 +112,30 @@ while (running)
                 }
                 break;
 
-            case "3":
-                Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
-                //Console.Write("Current sender is:" {GetUser} "and current reciever is:" {GetUser});
-                break;
+            case "3":       //meny för trade
+                Console.WriteLine("3,1. Choose Sender");
+                Console.WriteLine("3,2. Choose Reciever");
+                Console.WriteLine("3,3. Choose TradeStatus");
+                Console.WriteLine("3,4. Choose Item");
+                Console.WriteLine("3,5. Show current trade");
 
+                string tradeChoice = Console.ReadLine();
+                
+                switch (tradeChoice)        // en till switch för att kunna göra cases för trade
+                {
+
+                case "3,1":
+                Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
+                string[] user_rows = File.ReadAllLines("users.txt\n");       //få in info om user från users.txt
+                foreach (string user_row in user_rows)
+                {
+                    Console.WriteLine(user_row);
+                }
+
+                break;
+                }
+
+                break;
             case "6":
                 Console.WriteLine("You have been logged out");
                 Menu = false;
