@@ -14,7 +14,7 @@ A user needs to be able to browse completed requests.
 using System.Runtime.CompilerServices;
 using App;
 
-List<User> users = new List<User>();            
+List<User> users = new List<User>();
 
 List<Item> items = new List<Item>();
 
@@ -54,7 +54,7 @@ while (running)
                 currentUser = user;
                 Console.WriteLine($" Welcome {loginUser}");        // om rätt inlogg kommer man vidare till menyn
 
-                string[] User = { loginUser, loginPassword };     // Spara inlogg i users.txt
+                string[] User = { loginUser };     // Spara inlogg i users.txt
                 File.AppendAllLines("users.txt", User);
 
                 break;
@@ -68,7 +68,7 @@ while (running)
     bool Menu = true;
     while (Menu)    // En meny för att välja vad man vill göra
     {
-        Console.WriteLine("Ready to start trade?");
+        
         Console.WriteLine("Select what you want to do: ");
         Console.WriteLine("1. Add an item");
         Console.WriteLine("2. Show items in inventory");
@@ -120,19 +120,45 @@ while (running)
                 Console.WriteLine("3,5. Show current trade");
 
                 string tradeChoice = Console.ReadLine();
-                
+
                 switch (tradeChoice)        // en till switch för att kunna göra cases för trade
                 {
 
-                case "3,1":
-                Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
-                string[] user_rows = File.ReadAllLines("users.txt\n");       //få in info om user från users.txt
-                foreach (string user_row in user_rows)
-                {
-                    Console.WriteLine(user_row);
-                }
+                    case "3,1":
+                        
+                        string[] user_rows_sender = File.ReadAllLines("users.txt");       //få in info om user från users.txt
+                        foreach (string user_row_sender in user_rows_sender)
+                        {
+                            Console.WriteLine(user_row_sender);
+                        }
 
-                break;
+                        break;
+
+                    case "3,2":
+                        string[] user_rows_reciever = File.ReadAllLines("users.txt");       //få in info om user från users.txt
+                        foreach (string user_row_reciever in user_rows_reciever)
+                        {
+                            Console.WriteLine(user_row_reciever);
+                        }
+
+                        break;
+
+                    case "3,3":
+
+                        break;
+
+                    case "3,4":
+                        string[] item_rows = File.ReadAllLines("items.txt");  //för att visa items från textfilen items.txt
+                        foreach (string item_row in item_rows)
+                        {
+                            Console.WriteLine(item_row);
+                        }
+                        break;
+
+                    case "3,5":
+                        Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
+
+                        break;
                 }
 
                 break;
