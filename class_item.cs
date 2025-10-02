@@ -4,13 +4,16 @@ namespace App;
 
 class Item
 {
-    public string Item_name;
+    public string Name;
 
-    public string Item_description;
+    public string Owner;
 
-    public Item(string item_name, string item_description)
+    public string Description;
+
+    public Item(string name, string description, string owner)
     {
-        Item_description = item_description;
-        Item_name = item_name;
+        Description = description;
+        Name = name;
+        Owner = owner; 
     }
 }

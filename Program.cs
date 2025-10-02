@@ -82,15 +82,19 @@ while (running)
         switch (userChoice)
         {
             case "1":    // Detta är för att kunna lägga till items med namn och beskrivning
-                Item newItem = new Item("Name", "Description");
                 Console.Write("Please type in the name of your item: ");
-                newItem.Item_name = Console.ReadLine();
+                string itemName = Console.ReadLine();
+
                 Console.Write("Please type an description of your item: ");
-                newItem.Item_description = Console.ReadLine();
+                string itemDescription = Console.ReadLine();
+
+                Item newItem = new Item(itemName, itemDescription, currentUser.Username);
                 items.Add(newItem);
+
                 Console.WriteLine("The Item have been added! Press ENTER");
                 Console.ReadLine();
-                string[] Item = { newItem.Item_name, newItem.Item_description };
+
+                string[] Item = { newItem.Name, newItem.Description, newItem.Owner };
                 File.AppendAllLines("items.txt", Item);
                 break;
 
@@ -105,7 +109,7 @@ while (running)
                     for (int i = 0; i < items.Count; i++)
                     {
                         Item u = items[i];
-                        Console.WriteLine($"{i + 1}. {u.Item_name} with the description: {u.Item_description}");
+                        Console.WriteLine($"{i + 1}. {u.Name} with the description: {u.Description}");
                     }
                     Console.WriteLine("Press enter to continue");
                     Console.ReadLine();
@@ -127,19 +131,30 @@ while (running)
                     case "3,1":
                         
                         string[] user_rows_sender = File.ReadAllLines("users.txt");       //få in info om user från users.txt
-                        foreach (string user_row_sender in user_rows_sender)
+
+                        Console.WriteLine("Avaliable users:");
+                        for (int i = 0; i < user_rows_sender.Length; i++)  // en for loop här istället for en foreach efter som jag vill kunna ange ett index för att välja vilken användare jag vill man ska kunna välja som sender
                         {
-                            Console.WriteLine(user_row_sender);
+                            Console.WriteLine($"{i + 1}. {user_rows_sender[i]}");
                         }
+                        Console.Write("Choose a sender by number: ");
+                        int senderIndex = int.Parse(Console.ReadLine()) - 1;
+                        string sender = user_rows_sender[senderIndex];
+                        Console.WriteLine($"Sender chosen: {sender}");
 
                         break;
 
                     case "3,2":
                         string[] user_rows_reciever = File.ReadAllLines("users.txt");       //få in info om user från users.txt
-                        foreach (string user_row_reciever in user_rows_reciever)
+
+                        for (int i = 0; i < user_rows_reciever.Length; i++)
                         {
-                            Console.WriteLine(user_row_reciever);
+                            Console.WriteLine($"{i + 1}. {user_rows_reciever[i]}");
                         }
+                        Console.Write("Choose a reciever by number:");
+                        int recieverIndex = int.Parse(Console.ReadLine()) - 1;
+                        string reciever = user_rows_reciever[recieverIndex];
+                        Console.WriteLine($"Reciever chosen: {reciever}");
 
                         break;
 
@@ -149,6 +164,7 @@ while (running)
 
                     case "3,4":
                         string[] item_rows = File.ReadAllLines("items.txt");  //för att visa items från textfilen items.txt
+                        
                         foreach (string item_row in item_rows)
                         {
                             Console.WriteLine(item_row);
