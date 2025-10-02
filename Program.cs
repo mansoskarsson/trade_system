@@ -124,12 +124,15 @@ while (running)
                 Console.WriteLine("3,5. Show current trade");
 
                 string tradeChoice = Console.ReadLine();
+                string sender = null;
+                string reciever = null;
+                Item chosenItem = null;
 
                 switch (tradeChoice)        // en till switch för att kunna göra cases för trade
                 {
 
                     case "3,1":
-                        
+
                         string[] user_rows_sender = File.ReadAllLines("users.txt");       //få in info om user från users.txt
 
                         Console.WriteLine("Avaliable users:");
@@ -139,7 +142,7 @@ while (running)
                         }
                         Console.Write("Choose a sender by number: ");
                         int senderIndex = int.Parse(Console.ReadLine()) - 1;
-                        string sender = user_rows_sender[senderIndex];
+                        sender = user_rows_sender[senderIndex];
                         Console.WriteLine($"Sender chosen: {sender}");
 
                         break;
@@ -153,7 +156,7 @@ while (running)
                         }
                         Console.Write("Choose a reciever by number:");
                         int recieverIndex = int.Parse(Console.ReadLine()) - 1;
-                        string reciever = user_rows_reciever[recieverIndex];
+                        reciever = user_rows_reciever[recieverIndex];
                         Console.WriteLine($"Reciever chosen: {reciever}");
 
                         break;
@@ -164,16 +167,38 @@ while (running)
 
                     case "3,4":
                         string[] item_rows = File.ReadAllLines("items.txt");  //för att visa items från textfilen items.txt
-                        
-                        foreach (string item_row in item_rows)
+                        List<Item> userItems = new List<Item>();
+
+                        if (userItems.Count == 0)
                         {
-                            Console.WriteLine(item_row);
+                            Console.WriteLine("No items avaliable.");
+                            break;
                         }
+
+                        for (int i = 0; i < userItems.Count; i++)
+                            {
+                                Console.WriteLine($"{i + 1}. {userItems[i].Name} - {userItems[i].Description} (Owner: {userItems[i].Owner})");
+                            }
+
+                        Console.Write("Choose an item: ");
+                        int choice = int.Parse(Console.ReadLine()) - 1;
+                        chosenItem = userItems[choice];
+                        Console.WriteLine($"You chose: {chosenItem.Name} from {chosenItem.Owner}");
                         break;
 
                     case "3,5":
-                        Trade newTrade = new Trade("Sender", "Reciever", "TradeStatus", "Item");
-
+                        if (sender != null && reciever != null && chosenItem != null)
+                        {
+                            Console.WriteLine("You must choose sender, reciever and item first.");
+                        }
+                        else
+                        {
+                            Trade newTrade = new Trade(sender, reciever, chosenItem.Name);
+                            Console.WriteLine($"Trade created");
+                            Console.WriteLine($"Sender: {newTrade.Sender}");
+                            Console.WriteLine($"Reciever: {newTrade.Reciever}");
+                            Console.WriteLine($"Item: {newTrade.Item}");
+                        }
                         break;
                 }
 

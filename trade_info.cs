@@ -6,15 +6,15 @@ class Trade
 {
     public string Sender;
     public string Reciever;
-    public string TradeStatus;
+    
     public string Item;
 
 
-    public Trade(string sender, string reciever, string tradeStatus, string item)
+    public Trade(string sender, string reciever, string item)
     {
         Sender = sender;
         Reciever = reciever;
-        TradeStatus = tradeStatus;
+        
         Item = item;
 
     }
