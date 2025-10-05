@@ -26,7 +26,7 @@ class Trade
     //public User GetUser();
 
 }
-
+/*
 class Tradeaction
 {
     public string Accept;
@@ -39,3 +39,4 @@ class Tradeaction
         Deny = deny;
     }
 }    
+*/

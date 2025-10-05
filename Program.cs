@@ -11,6 +11,7 @@ A user needs to be able to deny a trade request.
 A user needs to be able to browse completed requests.
 */
 
+using System.Buffers;
 using System.Runtime.CompilerServices;
 using App;
 
@@ -116,93 +117,135 @@ while (running)
                 }
                 break;
 
+               
+
             case "3":       //meny för trade
-                Console.WriteLine("3,1. Choose Sender");
-                Console.WriteLine("3,2. Choose Reciever");
-                Console.WriteLine("3,3. Choose TradeStatus");
-                Console.WriteLine("3,4. Choose Item");
-                Console.WriteLine("3,5. Show current trade");
-
-                string tradeChoice = Console.ReadLine();
-                string sender = null;
-                string reciever = null;
-                Item chosenItem = null;
-
-                switch (tradeChoice)        // en till switch för att kunna göra cases för trade
                 {
+                    string sender = "";
+                    string reciever = "";
+                    Item chosenItem = null;
 
-                    case "3,1":
+                    bool TradeMenu = true;
+                    while (TradeMenu)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("=== Trade menu ===");
+                        Console.WriteLine("3,1. Choose Sender");
+                        Console.WriteLine("3,2. Choose Reciever");
+                        Console.WriteLine("3,3. Choose TradeStatus");
+                        Console.WriteLine("3,4. Choose Item");
+                        Console.WriteLine("3,5. Show current trade");
+                        Console.WriteLine("b. back to main menu");
+                        Console.Write("Choice: ");
 
-                        string[] user_rows_sender = File.ReadAllLines("users.txt");       //få in info om user från users.txt
+                        string tradeChoice = Console.ReadLine();
 
-                        Console.WriteLine("Avaliable users:");
-                        for (int i = 0; i < user_rows_sender.Length; i++)  // en for loop här istället for en foreach efter som jag vill kunna ange ett index för att välja vilken användare jag vill man ska kunna välja som sender
+
+                        switch (tradeChoice)        // en till switch för att kunna göra cases för trade
                         {
-                            Console.WriteLine($"{i + 1}. {user_rows_sender[i]}");
+
+                            case "3,1":
+
+                                string[] user_rows_sender = File.ReadAllLines("users.txt");       //få in info om user från users.txt
+
+                                if (users.Count == 0)
+                                {
+                                    Console.WriteLine("No users avaliable");
+                                    break;
+                                }
+                                Console.WriteLine("Avaliable users:");
+                                for (int i = 0; i < users.Count; i++)  // en for loop här istället for en foreach efter som jag vill kunna ange ett index för att välja vilken användare jag vill man ska kunna välja som sender
+                                
+                                    Console.WriteLine($"{i + 1}. {users[i].Username}");
+                                
+                                Console.Write("Choose a sender by number: ");
+                                if (int.TryParse(Console.ReadLine(), out int senderindex) && senderindex >= 1 && senderindex <= users.Count)
+                                {
+                                    sender = users[senderindex - 1].Username;
+                                    Console.WriteLine($"Sender chosen: {sender}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid selection");
+                                }
+                                break;
+
+                            case "3,2":
+                                string[] user_rows_reciever = File.ReadAllLines("users.txt");       //få in info om user från users.txt
+                                if (users.Count == 0)
+                                {
+                                    Console.WriteLine("No users avaliable");
+                                    break;
+                                }
+                                Console.WriteLine("Avaliable users:");
+                                for (int i = 0; i < users.Count; i++)
+                                    Console.WriteLine($"{i + 1}. {users[i].Username}");
+                                
+                                Console.Write("Choose a reciever by number:");
+                                if (int.TryParse(Console.ReadLine(), out int recieverindex) && recieverindex >= 1 && recieverindex <= users.Count)
+                                {
+                                    reciever = users[recieverindex - 1].Username;
+                                    Console.WriteLine($"Reciever chosen: {reciever}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid selection.");
+                                }
+                                break;
+
+                            case "3,3":
+
+                                break;
+
+                            case "3,4":
+                                string[] item_rows = File.ReadAllLines("items.txt");  //för att visa items från textfilen items.txt
+                                List<Item> userItems = new List<Item>();
+
+                                if (items.Count == 0)
+                                {
+                                    Console.WriteLine("No items avaliable");
+                                    break;
+                                }
+                                Console.WriteLine("Avaliable items:");
+
+                                for (int i = 0; i < items.Count; i++)
+                                    Console.WriteLine($"{i + 1}. {items[i].Name} - {items[i].Description} (Owner: {items[i].Owner})");
+                                Console.Write("Choose an item by number: ");
+                                if (int.TryParse(Console.ReadLine(), out int itemindex) && itemindex >= 1 && itemindex <= items.Count)
+                                {
+                                    chosenItem = items[itemindex - 1];
+                                    Console.WriteLine($"You chose: {chosenItem.Name} from {chosenItem.Owner}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid selection");
+                                }
+                                break;
+
+                            case "3,5":
+                                if (sender == null || reciever == null || chosenItem == null)
+                                {
+                                    Console.WriteLine("You must choose sender, reciever and item first.");
+                                }
+                                else
+                                {
+                                    Trade newTrade = new Trade(sender, reciever, chosenItem.Name);
+                                    Console.WriteLine($"Trade created");
+                                    Console.WriteLine($"Sender: {newTrade.Sender}");
+                                    Console.WriteLine($"Reciever: {newTrade.Reciever}");
+                                    Console.WriteLine($"Item: {newTrade.Item}");
+                                }
+                                break;
+                            case "b":
+                                TradeMenu = false;
+                                break;
                         }
-                        Console.Write("Choose a sender by number: ");
-                        int senderIndex = int.Parse(Console.ReadLine()) - 1;
-                        sender = user_rows_sender[senderIndex];
-                        Console.WriteLine($"Sender chosen: {sender}");
-
-                        break;
-
-                    case "3,2":
-                        string[] user_rows_reciever = File.ReadAllLines("users.txt");       //få in info om user från users.txt
-
-                        for (int i = 0; i < user_rows_reciever.Length; i++)
-                        {
-                            Console.WriteLine($"{i + 1}. {user_rows_reciever[i]}");
-                        }
-                        Console.Write("Choose a reciever by number:");
-                        int recieverIndex = int.Parse(Console.ReadLine()) - 1;
-                        reciever = user_rows_reciever[recieverIndex];
-                        Console.WriteLine($"Reciever chosen: {reciever}");
-
-                        break;
-
-                    case "3,3":
-
-                        break;
-
-                    case "3,4":
-                        string[] item_rows = File.ReadAllLines("items.txt");  //för att visa items från textfilen items.txt
-                        List<Item> userItems = new List<Item>();
-
-                        if (userItems.Count == 0)
-                        {
-                            Console.WriteLine("No items avaliable.");
-                            break;
-                        }
-
-                        for (int i = 0; i < userItems.Count; i++)
-                            {
-                                Console.WriteLine($"{i + 1}. {userItems[i].Name} - {userItems[i].Description} (Owner: {userItems[i].Owner})");
-                            }
-
-                        Console.Write("Choose an item: ");
-                        int choice = int.Parse(Console.ReadLine()) - 1;
-                        chosenItem = userItems[choice];
-                        Console.WriteLine($"You chose: {chosenItem.Name} from {chosenItem.Owner}");
-                        break;
-
-                    case "3,5":
-                        if (sender != null && reciever != null && chosenItem != null)
-                        {
-                            Console.WriteLine("You must choose sender, reciever and item first.");
-                        }
-                        else
-                        {
-                            Trade newTrade = new Trade(sender, reciever, chosenItem.Name);
-                            Console.WriteLine($"Trade created");
-                            Console.WriteLine($"Sender: {newTrade.Sender}");
-                            Console.WriteLine($"Reciever: {newTrade.Reciever}");
-                            Console.WriteLine($"Item: {newTrade.Item}");
-                        }
-                        break;
+                        Console.WriteLine("Press Enter to continue");
+                        Console.ReadLine();
+                        
+                    }
+                    break;
                 }
-
-                break;
             case "6":
                 Console.WriteLine("You have been logged out");
                 Menu = false;
