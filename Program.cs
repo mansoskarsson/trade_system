@@ -19,6 +19,8 @@ List<User> users = new List<User>();
 
 List<Item> items = new List<Item>();
 
+List<Trade> trades = new List<Item>();
+
 bool running = true;
 
 
@@ -74,8 +76,8 @@ while (running)
         Console.WriteLine("1. Add an item");
         Console.WriteLine("2. Show items in inventory");
         Console.WriteLine("3. Make a trade");
-        Console.WriteLine("4. Browse trade requests");
-        Console.WriteLine("5. Browse completed trades");
+        Console.WriteLine("4. Browse trade requests");       // if TradeStaus.Pending
+        Console.WriteLine("5. Browse completed trades");      // if TradeStatus.Accepted
         Console.WriteLine("6. Logout");
 
         string userChoice = Console.ReadLine();
@@ -124,6 +126,7 @@ while (running)
                     string sender = "";
                     string reciever = "";
                     Item chosenItem = null;
+                    TradeStatus currentTradeStatus = TradeStatus.Pending;
 
                     bool TradeMenu = true;
                     while (TradeMenu)
@@ -194,6 +197,26 @@ while (running)
                                 break;
 
                             case "3,3":
+                                Console.WriteLine("=== Choose Trade Status ===");
+                                var statuses = Enum.GetValues(typeof(TradeStatus));
+
+                                int index = 1;
+                                foreach (TradeStatus y in statuses)
+                                {
+                                    Console.WriteLine($"{index}. {y}");
+                                    index++;
+                                }
+
+                                Console.Write("Chose a status by number: ");
+                                if (int.TryParse(Console.ReadLine(), out int statusIndex) && statusIndex >= 1 && statusIndex <= statuses.Length)
+                                {
+                                    TradeStatus chosenStatus = (TradeStatus)statuses.GetValue(statusIndex - 1);
+                                    Console.WriteLine($"Trade status chosen: {chosenStatus}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid slection");
+                                }
 
                                 break;
 
@@ -209,7 +232,7 @@ while (running)
                                 Console.WriteLine("Avaliable items:");
 
                                 for (int i = 0; i < items.Count; i++)
-                                    Console.WriteLine($"{i + 1}. {items[i].Name} - {items[i].Description} (Owner: {items[i].Owner})");
+                                    Console.WriteLine($"{i + 1}. {items[i].Name} - {items[i].Description} (Owner: {items[i].Owner})");   // för att kunna välja items med ett nummer
                                 Console.Write("Choose an item by number: ");
                                 if (int.TryParse(Console.ReadLine(), out int itemindex) && itemindex >= 1 && itemindex <= items.Count)
                                 {
@@ -229,14 +252,17 @@ while (running)
                                 }
                                 else
                                 {
-                                    Trade newTrade = new Trade(sender, reciever, chosenItem.Name);
+                                    Trade newTrade = new Trade(sender, reciever, chosenItem.Name, currentTradeStatus);          //visar vilken sender, reciever och item för traden
+                                    trades.Add(newTrade);           //lägger till en trade för case 4 där jag vill att alla trades med "pending" från case 3,3 tradestatus ska visas
+
                                     Console.WriteLine($"Trade created");
                                     Console.WriteLine($"Sender: {newTrade.Sender}");
                                     Console.WriteLine($"Reciever: {newTrade.Reciever}");
                                     Console.WriteLine($"Item: {newTrade.Item}");
+                                    Console.WriteLine($"Status: {newTrade.Status}");
                                 }
                                 break;
-                            case "b":
+                            case "b":                        //för att komma tillbaka till main menu
                                 TradeMenu = false;
                                 break;
                         }
@@ -246,7 +272,67 @@ while (running)
                     }
                     break;
                 }
-            case "6":
+
+                case "4":
+                Console.WriteLine("=== Pending Trade Requests ===");
+
+                List<Trade> pendingTrades = new List<Trade>();
+
+                foreach (Trade t in trades)
+                {
+                    if (t.Status == TradeStatus.Pending)
+                    {
+                        pendingTrades.Add(t);
+                    }
+                }
+
+                if (pendingTrades.Count == 0)
+                {
+                    Console.WriteLine("No pending trades avaliable");
+                }
+                else
+                {
+                    for (int i = 0; i < pendingTrades.Count; i++)
+                    {
+                        Trade trade = pendingTrades[i];
+                        Console.WriteLine($"{i + 1}. Sender: {trade.Sender} --> Reciever: {trade.Reciever} | Item: {trade.Item} | Status: {trade.Status}");
+                    }
+                }
+
+                Console.WriteLine("Press Enter to continue");
+                Console.ReadLine();
+                break;
+
+                case "5":
+                Console.WriteLine("=== Completed Trades ===");
+
+                List<Trade> completedTrades = new List<Trade>();
+
+                foreach (Trade t in trades)
+                {
+                    if (t.Status == TradeStatus.Accepted || t.Status == TradeStatus.Denied)
+                    {
+                        completedTrades.Add(t);
+                    }
+                }
+                if (completedTrades.Count == 0)
+                {
+                    Console.WriteLine("No completed trades found");
+                }
+                else
+                {
+                    for (int i = 0; i < completedTrades.Count; i++)
+                    {
+                        Trade trade = completedTrades[i];
+                        Console.WriteLine($"{i + 1}. Sender: {trade.Sender} --> Reciever: {trade.Reciever} | Item: {trade.Item} | Status: {trade.Status}");
+                    }
+                }
+                Console.WriteLine("Press Enter to continue");
+                Console.ReadLine();
+                break;
+
+
+            case "6":                                              // för att kunna logga ut och därefter kunna skapa en till användare
                 Console.WriteLine("You have been logged out");
                 Menu = false;
                 break;

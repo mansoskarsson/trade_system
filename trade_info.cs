@@ -6,16 +6,17 @@ class Trade
 {
     public string Sender;
     public string Reciever;
-    
     public string Item;
 
+    public TradeStatus Status;
 
-    public Trade(string sender, string reciever, string item)
+
+    public Trade(string sender, string reciever, string item, TradeStatus status)
     {
         Sender = sender;
         Reciever = reciever;
-        
         Item = item;
+        Status = status;
 
     }
 
@@ -26,6 +27,16 @@ class Trade
     //public User GetUser();
 
 }
+
+enum TradeStatus
+{
+    Pending,
+    Denied,
+    Accepted,
+}
+
+
+
 /*
 class Tradeaction
 {
